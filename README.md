@@ -9,6 +9,8 @@ This project is a small SAP Fiori/UI5 application that displays product articles
 - Navigates from the article list to a detail route using `ArticleId`.
 - Finds and displays the selected article on the detail page.
 - Includes formatted article dates and status information.
+- Provides German product descriptions and categories alongside the original English values.
+- Loads preorder data for the related-preorders table on the detail page.
 - Supports back navigation from the detail page.
 
 ## Implementation Steps
@@ -24,6 +26,21 @@ items="{Articles>/Articles}"
 ```
 
 Each table cell uses the named `Articles` model to display fields such as `ArticleId`, `Description`, `Category`, `Supplier`, and `UnitPrice`.
+
+### Article translations
+
+Every article in `webapp/localServices/data/Articles.json` contains both the original English text and its German equivalent:
+
+```json
+{
+  "Description": "Organic apple juice cloudy 1 l",
+  "DescriptionDE": "Bio-Apfelsaft, trüb, 1 l",
+  "Category": "Beverages",
+  "CategoryDE": "Getränke"
+}
+```
+
+`DescriptionDE` and `CategoryDE` are data fields rather than UI resource-bundle entries. A view can bind to them through the named `Articles` model, for example `{Articles>DescriptionDE}`. Adding these fields does not automatically switch product data when the application language changes; language-dependent field selection must be handled separately.
 
 ### 2. Navigate with the article ID
 
@@ -137,7 +154,10 @@ webapp/
 │   ├── ArticleList.controller.js
 │   └── RouteArticleDetail.controller.js
 ├── localServices/data/
-│   └── Articles.json
+│   ├── Articles.json
+│   └── Preorders.json
+├── i18n/
+│   └── i18n.properties
 ├── view/
 │   ├── ArticleList.view.xml
 │   └── RouteArticleDetail.view.xml
